@@ -43,7 +43,7 @@ module.exports = {
     const db = req.app.get("db");
     const { id } = req.params;
     // console.log(req.body);
-    const { product_name, price, img_url } = req.body;
+    const { product_name, price, img_url } = req.body.newItem;
 
     db.edit_product([id, product_name, price, img_url])
       .then(products => {

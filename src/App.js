@@ -46,7 +46,7 @@ class App extends React.Component {
   getItem = id => {
     // console.log(id);
     axios.get(`/api/product/${id}`).then(response => {
-      this.setState({ item: response.data });
+      this.setState({ item: response.data[0] });
     });
   };
   toggleEdit = () => {
@@ -60,8 +60,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { product_name, price, img_url } = this.state.item;
-    console.log(this.state.item);
+    // console.log(this.state.item);
     return (
       <div className="App">
         <Header />
@@ -70,9 +69,9 @@ class App extends React.Component {
           toggleEdit={this.toggleEdit}
           editItem={this.editItem}
           item={this.state.item}
-          product_name={product_name}
-          price={price}
-          img_url={img_url}
+          product_name={this.state.item.product_name}
+          price={this.state.item.price}
+          img_url={this.state.item.img_url}
           canEdit={this.state.canEdit}
         />
         <Dashboard

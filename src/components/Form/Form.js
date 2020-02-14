@@ -5,8 +5,8 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      price: 0,
+      name: ``,
+      price: ``,
       imgUrl: ""
     };
     this.baseState = this.state;
@@ -22,33 +22,44 @@ class Form extends React.Component {
     this.setState({ imgUrl: val });
   };
 
+  setInputs = (name, price, imgUrl) => {
+    this.setState({ name: `${this.props.product_name}`, price, imgUrl });
+  };
+
   clearInputs = () => {
     this.setState(this.baseState);
   };
 
   render() {
+    console.log(this.props.product_name);
+    // const needEls = this.props.item.map(el => {
+    //   return `${el.product_name}`;
+    // });
     return (
       <div>
-        {console.log(this.props.item)}
         Form.js
         <p>Image URL</p>
         <input
-          value={this.props.img_url}
+          value={this.state.img_url}
           onChange={e => this.handleImgChange(e.target.value)}
         />
         <p>Product Name</p>
         <input
-          value={this.props.product_name}
+          value={this.state.name}
           onChange={e => this.handleChange(e.target.value)}
         />
         <p>Price:</p>
-        <input value={this.props.price} type="number" />
+        <input value={this.state.price} type="number" />
         <section>
           <button onClick={this.clearInputs}>Cancel</button>
           {this.props.canEdit ? (
             <button
               onClick={() => {
-                this.props.editItem(this.props.item.product_id);
+                this.props.editItem(this.props.item.product_id, {
+                  product_name: this.state.name,
+                  price: this.state.price,
+                  img_url: this.state.imgUrl
+                });
                 this.props.toggleEdit();
               }}
             >
