@@ -47,7 +47,7 @@ module.exports = {
     const { product_name, price, img_url } = req.body.newItem;
     db.edit_product([id, product_name, price, img_url])
       .then(product => {
-        // console.log(products);
+        // console.log(product);
         res.status(200).send(product);
       })
       .catch(() => console.log("editProduct error"));

@@ -1,5 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
+import { Link } from "react-router-dom";
 
 class Form extends React.Component {
   constructor(props) {
@@ -36,6 +37,14 @@ class Form extends React.Component {
     }
   };
 
+  setInputs = () => {
+    this.setState({
+      name: "",
+      price: "",
+      imgUrl: ""
+    });
+  };
+
   componentDidUpdate = previousProps => {
     if (previousProps != this.props) {
       this.editText();
@@ -66,39 +75,48 @@ class Form extends React.Component {
           onChange={e => this.handleNumChange(e.target.value)}
         />
         <section>
-          <button
-            onClick={() => {
-              this.setInputs();
-              this.props.toggleEditFalse();
-            }}
-          >
-            Cancel
-          </button>
-          {this.props.canEdit ? (
+          <Link to="/">
             <button
               onClick={() => {
-                this.props.editItem(this.props.product_id, {
-                  product_name: this.state.name,
-                  price: this.state.price,
-                  img_url: this.state.imgUrl
-                });
-                // this.props.toggleEdit();
+                this.setInputs();
+                this.props.toggleEditFalse();
               }}
             >
-              Save Changes
+              Cancel
             </button>
+          </Link>
+
+          {this.props.canEdit ? (
+            <Link to="/">
+              <button
+                onClick={() => {
+                  this.props.editItem(this.props.product_id, {
+                    product_name: this.state.name,
+                    price: this.state.price,
+                    img_url: this.state.imgUrl
+                  });
+                  this.props.toggleEditFalse();
+                  this.setInputs();
+                }}
+              >
+                Save Changes
+              </button>
+            </Link>
           ) : (
-            <button
-              onClick={() =>
-                this.props.addToInventory({
-                  product_name: this.state.name,
-                  price: this.state.price,
-                  img_url: this.state.imgUrl
-                })
-              }
-            >
-              Add to Inventory
-            </button>
+            <Link to="/">
+              <button
+                onClick={() => {
+                  this.props.addToInventory({
+                    product_name: this.state.name,
+                    price: this.state.price,
+                    img_url: this.state.imgUrl
+                  });
+                  this.setInputs();
+                }}
+              >
+                Add to Inventory
+              </button>
+            </Link>
           )}
         </section>
       </div>

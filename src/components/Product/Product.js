@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Product(props) {
   return (
@@ -12,14 +13,17 @@ function Product(props) {
         {props.item.product_id}
       </section>
       <section>
-        <button
-          onClick={() => {
-            props.getItem(props.item.product_id);
-            props.toggleEdit();
-          }}
-        >
-          Edit
-        </button>
+        <Link to="/form">
+          <button
+            onClick={() => {
+              props.getItem(props.item.product_id);
+              props.toggleEdit();
+            }}
+          >
+            Edit
+          </button>
+        </Link>
+
         <button onClick={() => props.deleteItem(props.item.product_id)}>
           Delete
         </button>
