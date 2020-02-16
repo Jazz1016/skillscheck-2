@@ -8,6 +8,7 @@ function Product(props) {
       <section>{props.item.product_name}</section>
       <section>
         {props.item.price}
+        <br />
         {props.item.product_id}
       </section>
       <section>

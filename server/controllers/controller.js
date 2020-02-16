@@ -12,7 +12,7 @@ module.exports = {
     const db = req.app.get("db");
     // console.log(req.body);
     const { product_name, price, img_url } = req.body.newItem;
-    db.add_product([product_name, price, img_url])
+    db.add_product([product_name, +price, img_url])
       .then(() =>
         // console.log(product)
         res.sendStatus(200)
@@ -41,14 +41,14 @@ module.exports = {
   },
   editProduct: (req, res) => {
     const db = req.app.get("db");
+    // console.log(req.params);
     const { id } = req.params;
     // console.log(req.body);
     const { product_name, price, img_url } = req.body.newItem;
-
     db.edit_product([id, product_name, price, img_url])
-      .then(products => {
+      .then(product => {
         // console.log(products);
-        res.sendStatus(200);
+        res.status(200).send(product);
       })
       .catch(() => console.log("editProduct error"));
 

@@ -5,6 +5,8 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Header from "./components/Header/Header";
 import Form from "./components/Form/Form";
 import axios from "axios";
+import { HashRouter, Link } from "react-router-dom";
+import routes from "./routes";
 
 class App extends React.Component {
   constructor(props) {
@@ -13,6 +15,7 @@ class App extends React.Component {
       inventory: [],
       canEdit: false,
       item: {
+        product_id: 0,
         product_name: "",
         price: 0,
         img_url: ""
@@ -33,7 +36,7 @@ class App extends React.Component {
   }
 
   addToInventory = newItem => {
-    console.log(newItem);
+    // console.log(newItem);
     axios.post(`/api/product`, { newItem }).then(() => {
       this.getInventory();
     });
@@ -49,39 +52,46 @@ class App extends React.Component {
       this.setState({ item: response.data[0] });
     });
   };
-  toggleEdit = () => {
-    this.setState({ canEdit: !this.state.canEdit });
-  };
   toggleEditTrue = () => {
     this.setState({ canEdit: true });
   };
+  toggleEditFalse = () => {
+    this.setState({ canEdit: false });
+  };
   editItem = (id, newItem) => {
-    axios.put(`/api/product/${id}`, { newItem });
+    axios.put(`/api/product/${id}`, { newItem }).then(() => {
+      this.getInventory();
+    });
   };
 
   render() {
     // console.log(this.state.item);
     return (
-      <div className="App">
-        <Header />
-        <Form
-          addToInventory={this.addToInventory}
-          toggleEdit={this.toggleEdit}
-          editItem={this.editItem}
-          item={this.state.item}
-          product_name={this.state.item.product_name}
-          price={this.state.item.price}
-          img_url={this.state.item.img_url}
-          canEdit={this.state.canEdit}
-        />
-        <Dashboard
-          deleteItem={this.deleteItem}
-          inventory={this.state.inventory}
-          getInventory={this.getInventory}
-          getItem={this.getItem}
-          toggleEdit={this.toggleEditTrue}
-        />
-      </div>
+      <HashRouter>
+        <div className="App">
+          <Header />
+          <Form
+            addToInventory={this.addToInventory}
+            editItem={this.editItem}
+            item={this.state.item}
+            product_id={this.state.item.product_id}
+            product_name={this.state.item.product_name}
+            price={this.state.item.price}
+            img_url={this.state.item.img_url}
+            canEdit={this.state.canEdit}
+            toggleEditTrue={this.toggleEditTrue}
+            toggleEditFalse={this.toggleEditFalse}
+            canEdit={this.state.canEdit}
+          />
+          <Dashboard
+            deleteItem={this.deleteItem}
+            inventory={this.state.inventory}
+            getInventory={this.getInventory}
+            getItem={this.getItem}
+            toggleEdit={this.toggleEditTrue}
+          />
+        </div>
+      </HashRouter>
     );
   }
 }

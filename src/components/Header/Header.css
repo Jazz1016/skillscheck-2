@@ -1,0 +1,11 @@
+.header {
+  background-color: firebrick;
+  height: 8vw;
+  width: 98.75vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: stretch;
+}

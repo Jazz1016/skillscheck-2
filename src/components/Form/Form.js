@@ -7,9 +7,8 @@ class Form extends React.Component {
     this.state = {
       name: ``,
       price: ``,
-      imgUrl: ""
+      imgUrl: ``
     };
-    this.baseState = this.state;
   }
 
   handleChange = val => {
@@ -22,45 +21,68 @@ class Form extends React.Component {
     this.setState({ imgUrl: val });
   };
 
-  setInputs = (name, price, imgUrl) => {
-    this.setState({ name: `${this.props.product_name}`, price, imgUrl });
+  handleNumChange = val => {
+    // console.log(val);
+    this.setState({ price: val });
   };
 
-  clearInputs = () => {
-    this.setState(this.baseState);
+  editText = () => {
+    if (this.props.canEdit === true) {
+      this.setState({
+        name: this.props.product_name,
+        price: this.props.price,
+        imgUrl: this.props.img_url
+      });
+    }
+  };
+
+  componentDidUpdate = previousProps => {
+    if (previousProps != this.props) {
+      this.editText();
+    }
   };
 
   render() {
-    console.log(this.props.product_name);
-    // const needEls = this.props.item.map(el => {
-    //   return `${el.product_name}`;
-    // });
     return (
       <div>
         Form.js
-        <p>Image URL</p>
+        <p>Image URL:</p>
         <input
-          value={this.state.img_url}
+          value={this.state.imgUrl}
+          // defaultValue={this.props.img_url}
           onChange={e => this.handleImgChange(e.target.value)}
         />
-        <p>Product Name</p>
+        <p>Product Name:</p>
         <input
           value={this.state.name}
+          // defaultValue={this.props.product_name}
           onChange={e => this.handleChange(e.target.value)}
         />
         <p>Price:</p>
-        <input value={this.state.price} type="number" />
+        <input
+          type="number"
+          value={this.state.price}
+          // defaultValue={this.props.price}
+          onChange={e => this.handleNumChange(e.target.value)}
+        />
         <section>
-          <button onClick={this.clearInputs}>Cancel</button>
+          <button
+            onClick={() => {
+              this.setInputs();
+              this.props.toggleEditFalse();
+            }}
+          >
+            Cancel
+          </button>
           {this.props.canEdit ? (
             <button
               onClick={() => {
-                this.props.editItem(this.props.item.product_id, {
+                this.props.editItem(this.props.product_id, {
                   product_name: this.state.name,
                   price: this.state.price,
                   img_url: this.state.imgUrl
                 });
-                this.props.toggleEdit();
+                // this.props.toggleEdit();
               }}
             >
               Save Changes
